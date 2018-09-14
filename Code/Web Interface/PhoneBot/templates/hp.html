@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+.chat
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chat li
+{
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    
+}
+
+.chat li.left .chat-body
+{
+    margin-left: 60px;
+}
+
+.chat li.right .chat-body
+{
+    margin-right: 60px;
+}
+
+
+.chat li .chat-body p
+{
+    margin: 0;
+    color: #777777;
+}
+
+.panel .slidedown .glyphicon, .chat .glyphicon
+{
+    margin-right: 5px;
+}
+
+.panel-body
+{
+    overflow-y: scroll;
+    height: 550px;
+}
+
+::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
+#header {
+                text-align: center;
+            }
+            #wrapper {
+                margin:0 auto;
+                width:600px;
+            }
+            #submain {
+                margin:0 auto;
+                width:600px;
+            }
+            #sub-left {
+                float:left;
+                width:300px;
+            }
+            #sub-right {
+                float:right;
+                width:240px;
+                text-align: right;
+            }
+            #divleft{
+
+                width:100%;
+
+            }
+
+            #divright{
+
+                    background-color: #add6b8;
+                    float: right;
+                    width:auto;
+                    padding-top: 1%;
+                    padding-left:1%;
+                    padding-right: 1%;
+
+            }
+
+
+    </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+</head>
+
+<body>
+    <!-- {{chats.1.1|safe}} -->
+    <a href="#temp" id="scrolldown" style="visibility: collapse;">scroll down</a>           
+    <div  style='height:100%;'>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading" id="accordion">
+                    <span class="glyphicon glyphicon-comment"></span> PhoneBot
+                   
+                </div>
+            
+                <div class="panel-body">
+                    <ul class="chat">   
+                            
+                    {% for eachChat in chats %}  
+                            {% if eachChat.0 == 0 %}
+                                <li><div id="divright" >
+                                    <p>
+                                        {{eachChat.1|safe}}
+                                    </p>                                                           
+                                </div>
+                                <br/><br/>
+                                </li>
+                                {% elif eachChat.0 == 1 %}  
+                                    <li><div id="divleft">
+                                        {{eachChat.1|safe}}
+                                    </div>
+                                    </li>
+                                 {% else %}
+                                 <li><div id="divleft"> 
+                                    <table id="divleft">
+                                   <th>{{eachChat.1|safe}}</th>
+                                   </table>
+                                  </div>            
+                                  </li>
+                            {% endif %}
+                    {% endfor %}
+
+                  <!--   </ul> -->
+                    <div id="temp"></div>
+                                      
+                </div>
+                 <form action="/PhoneBot/" method="POST" >
+                {% csrf_token %}
+                <script>
+document.getElementById("scrolldown").click();
+</script>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="btn-input" name="num" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                        <span class="input-group-btn">
+                           <input type="submit" class="btn btn-primary btn-sm" value="Send"/>
+                                
+                        </span>
+                    </div>
+                </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+   <script type="text/javascript">
+    $(document).ready(function() {
+    // Configure/customize these variables.
+    var showChar = 210;  // How many characters are shown by default
+    var ellipsestext = "...";
+    var moretext = "Show more >";
+    var lesstext = "Show less";
+
+
+    $('.more').each(function() {
+        var content = $(this).html();
+
+        if(content.length > showChar) {
+
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar, content.length - showChar);
+
+            var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+
+            $(this).html(html);
+        }
+
+    });
+
+    $(".morelink").click(function(){
+        if($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html(moretext);
+        } else {
+            $(this).addClass("less");
+            $(this).html(lesstext);
+        }
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        return false;
+    });
+});
+   </script>
+
+
+</html>
+
+
